@@ -1,0 +1,261 @@
+---
+const stats = [
+  { value: '3+',   label: 'Years building' },
+  { value: '4',    label: 'Production roles' },
+  { value: '10K+', label: 'Calls/day system' },
+  { value: 'AI',   label: 'First approach' },
+];
+---
+
+<section id="about" class="about-section">
+  <div class="about-inner">
+
+    <!-- Header -->
+    <div class="about-header reveal">
+      <p class="about-eyebrow">About</p>
+      <h2 class="about-heading">Who I am</h2>
+    </div>
+
+    <!-- Content: portrait + bio + stats -->
+    <div class="about-grid">
+
+      <!-- Portrait -->
+      <div class="about-portrait reveal">
+        <div class="portrait-frame">
+          <img
+            src="/images/avatar.png"
+            alt="Adrian Gaitan — illustrated portrait"
+            width="400"
+            height="500"
+            loading="lazy"
+            decoding="async"
+          />
+          <!-- Glow ring behind the image -->
+          <div class="portrait-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <!-- Right column: bio + stats -->
+      <div class="about-right">
+
+        <!-- Bio -->
+        <div class="about-bio reveal">
+          <p class="bio-text">
+            I'm a Full Stack Engineer from Pereira, Colombia, with a focus on building
+            systems where AI is the intelligence layer — not just a wrapper around a model.
+          </p>
+          <p class="bio-text">
+            My work spans event-driven backend architectures and microservices
+            migrations to integrating LLMs into production workflows. I'm drawn to
+            problems at the intersection of distributed systems and machine intelligence.
+          </p>
+          <p class="bio-text">
+            Currently studying Systems and Computer Engineering at
+            <span class="bio-accent">Universidad Tecnológica de Pereira</span> while
+            working across AI tooling, real estate, and blockchain projects.
+          </p>
+
+          <!-- Location pill -->
+          <div class="bio-location">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 10c0 6-8 13-8 13s-8-7-8-13a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            Pereira, Colombia
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="about-stats reveal">
+          {stats.map(({ value, label }) => (
+            <div class="stat-card">
+              <span class="stat-value">{value}</span>
+              <span class="stat-label">{label}</span>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 1.5rem;
+  }
+
+  .about-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .about-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .about-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .about-heading {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--foreground);
+  }
+
+  /* Main grid: portrait | bio+stats */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .about-grid {
+      grid-template-columns: 280px 1fr;
+      gap: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-grid {
+      grid-template-columns: 320px 1fr;
+      gap: 5rem;
+    }
+  }
+
+  /* Portrait */
+  .about-portrait {
+    display: flex;
+    justify-content: center;
+  }
+
+  .portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+
+    /* Dark base so mix-blend-mode: lighten works in both themes */
+    background: #050506;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .portrait-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 1;
+
+    /* Blends dark bg of image into the dark container → transparent */
+    mix-blend-mode: lighten;
+
+    /* Subtle gradient fade starting low — keeps face fully visible */
+    -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  }
+
+  .portrait-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%, var(--accent-glow), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(0 212 255 / 0.15), transparent 60%);
+    z-index: 0;
+    filter: blur(24px);
+  }
+
+  /* Right column */
+  .about-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* Bio */
+  .bio-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--foreground-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .bio-text:last-of-type {
+    margin-bottom: 1.75rem;
+  }
+
+  .bio-accent {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .bio-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--foreground-muted);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    padding: 0.4rem 0.875rem;
+    border-radius: 999px;
+  }
+
+  /* Stats */
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .about-stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    transition: border-color 200ms ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent-border-mix);
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--foreground-muted);
+    font-weight: 500;
+  }
+</style>
