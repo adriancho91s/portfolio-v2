@@ -57,7 +57,7 @@ export function toggleTheme(buttonEl: HTMLElement): void {
         { clipPath: `circle(0px at ${x}px ${y}px)` },
         { clipPath: `circle(${maxR}px at ${x}px ${y}px)` },
       ],
-      { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+      { duration: 1000, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
     );
     anim.onfinish = () => {
       applyTheme(next);
