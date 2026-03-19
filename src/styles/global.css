@@ -1,0 +1,262 @@
+@import "tailwindcss";
+@source "../components/**/*.tsx";
+@source "../components/**/*.astro";
+@source "../pages/**/*.astro";
+
+/* ─── Tailwind v4 theme tokens ───────────────────────────── *
+ * Expose CSS custom properties as Tailwind color tokens.
+ * Use these in TSX: text-accent, bg-surface-elevated, border-border, etc.
+ * ----------------------------------------------------------- */
+@theme inline {
+  --color-accent:            var(--accent);
+  --color-accent-secondary:  var(--accent-secondary);
+  --color-accent-glow:       var(--accent-glow);
+  --color-accent-sub:        var(--accent-secondary-sub);
+  --color-accent-border:     var(--accent-border-mix);
+  --color-surface-deep:      var(--bg-deep);
+  --color-surface-elevated:  var(--bg-elevated);
+  --color-surface:           var(--bg-surface);
+  --color-fg:                var(--foreground);
+  --color-fg-muted:          var(--foreground-muted);
+  --color-fg-dim:            var(--foreground-dim);
+  --color-border:            var(--border);
+}
+
+/* ─── Design tokens ─────────────────────────────────────── */
+:root {
+  --bg-deep:              #050506;
+  --bg-elevated:          #0a0a0c;
+  --bg-surface:           rgba(255 255 255 / 0.05);
+  --foreground:           #ededef;
+  --foreground-muted:     #8a8f98;
+  --foreground-dim:       color-mix(in srgb, #ededef 20%, transparent);
+  --accent:               #5e6ad2;
+  --accent-glow:          rgba(94 106 210 / 0.2);
+  --accent-secondary:     #00d4ff;
+  --accent-secondary-sub: rgba(0 212 255 / 0.07);
+  --accent-border-mix:    color-mix(in srgb, #5e6ad2 40%, rgba(255 255 255 / 0.08));
+  --border:               rgba(255 255 255 / 0.08);
+  --radius:               16px;
+  color-scheme: dark;
+
+  /* ── Hero component tokens (theme-switchable via CSS var) ── */
+  --hero-title-gradient:  linear-gradient(160deg, #ffffff 0%, rgba(255 255 255 / 0.95) 45%, rgba(200 210 255 / 0.85) 100%);
+  --hero-title-filter:    drop-shadow(0 4px 32px rgba(94 106 210 / 0.35));
+  --hero-backdrop:        radial-gradient(ellipse 70% 65% at 50% 50%, rgba(5 5 6 / 0.72) 0%, rgba(5 5 6 / 0.2) 55%, transparent 75%);
+
+  /* ── Badge chip tokens ── */
+  --badge-bg:             rgba(10 10 18 / 0.55);
+  --badge-bg-hover:       rgba(0 212 255 / 0.06);
+  --badge-border:         none;
+  --badge-shadow:         none;
+  --badge-text:           var(--accent-secondary);
+  --badge-dot:            var(--accent-secondary);
+}
+
+[data-theme="light"] {
+  --bg-deep:              #f8f9fc;
+  --bg-elevated:          #ffffff;
+  --bg-surface:           rgba(0 0 0 / 0.03);
+  --foreground:           #1e1b4b;
+  --foreground-muted:     #64748b;
+  --foreground-dim:       color-mix(in srgb, #1e1b4b 20%, transparent);
+  --accent:               #4f46e5;
+  --accent-glow:          rgba(79 70 229 / 0.15);
+  --accent-secondary:     #0891b2;
+  --accent-secondary-sub: rgba(8 145 178 / 0.07);
+  --accent-border-mix:    color-mix(in srgb, #4f46e5 40%, rgba(0 0 0 / 0.08));
+  --border:               rgba(0 0 0 / 0.08);
+  color-scheme: light;
+
+  /* ── Hero tokens — light mode ── */
+  --hero-title-gradient:  linear-gradient(160deg, #1e1b4b 0%, #3730a3 100%);
+  --hero-title-filter:    none;
+  --hero-backdrop:        none;
+
+  /* ── Badge chip tokens — light mode ── */
+  --badge-bg:             rgba(237 239 255 / 0.72);
+  --badge-bg-hover:       rgba(230 233 255 / 0.82);
+  --badge-border:         1px solid rgba(79 70 229 / 0.22);
+  --badge-shadow:         0 1px 6px rgba(79 70 229 / 0.1);
+  --badge-text:           #3730a3;
+  --badge-dot:            #0891b2;
+}
+
+/* ─── Base ───────────────────────────────────────────────── */
+/* Wrap in @layer base so Tailwind utilities (padding, margin, gap, etc.) win */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background-color: var(--bg-deep);
+    color: var(--foreground);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+  }
+} /* end @layer base */
+
+/* ─── Ambient blobs ──────────────────────────────────────── */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  animation: blobFloat 20s ease-in-out infinite;
+}
+
+.blob-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; }
+.blob-2 { width: 400px; height: 400px; background: var(--accent-secondary); bottom: 20%; left: -100px; animation-delay: -8s; }
+
+/* Light mode: blobs become gentle accent-tinted halos, not gray patches */
+[data-theme="light"] .blob   { opacity: 0.07; filter: blur(120px); }
+[data-theme="light"] .blob-1 { background: #818cf8; } /* lighter indigo so it reads as soft blue */
+[data-theme="light"] .blob-2 { background: #67e8f9; } /* lighter cyan */
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ─── Section reveal (native scroll-driven) ──────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  animation: revealUp linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(2rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Skip link ──────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius);
+  font-weight: 600;
+  z-index: 1000;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ─── Light-mode component overrides ────────────────────── *
+ * Placed here (not in component <style>) to guarantee cascade
+ * correctness — Astro scope hashes can cause light-mode rules
+ * to lose to dark-mode base rules of equal specificity.
+ * ----------------------------------------------------------- */
+
+/* Logo avatar — lighten blend-mode must be disabled in light mode.
+   html prefix gives specificity (0,2,1) > component scoped rule (0,2,0). */
+html[data-theme="light"] .logo-img {
+  mix-blend-mode: normal;
+  background: #ffffff;
+  border-color: rgba(0 0 0 / 0.1);
+}
+
+/* Navbar — clean white glass, visible border + shadow */
+[data-theme="light"] .navbar {
+  background: rgba(255 255 255 / 0.88);
+  border-bottom: 1px solid rgba(0 0 0 / 0.09);
+  box-shadow: 0 1px 0 rgba(0 0 0 / 0.06), 0 4px 16px rgba(0 0 0 / 0.04);
+}
+
+/* Hero subtitle */
+[data-theme="light"] .hero-subtitle {
+  color: #334155;
+  text-shadow: none;
+}
+
+/* CTA button — directional shadow, not a spread glow */
+[data-theme="light"] .hero-cta {
+  box-shadow: 0 4px 20px rgba(79 70 229 / 0.3), 0 1px 4px rgba(79 70 229 / 0.15);
+}
+
+[data-theme="light"] .hero-cta:hover {
+  box-shadow: 0 6px 28px rgba(79 70 229 / 0.38), 0 2px 6px rgba(79 70 229 / 0.18);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Secondary link — visible on white */
+[data-theme="light"] .hero-secondary-link {
+  background: rgba(255 255 255 / 0.9);
+  border-color: rgba(0 0 0 / 0.14);
+  box-shadow: 0 1px 4px rgba(0 0 0 / 0.07);
+}
+
+[data-theme="light"] .hero-secondary-link:hover {
+  background: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(79 70 229 / 0.12);
+}
+
+/* ─── Custom scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ─── Theme propagation (View Transitions API) ───────────── */
+@keyframes theme-reveal {
+  from { clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%)); }
+  to   { clip-path: circle(150vmax at var(--vt-x, 50%) var(--vt-y, 50%)); }
+}
+
+/* New theme expands from button: expo-out easing for premium feel */
+::view-transition-new(root) {
+  animation: theme-reveal 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 2;
+  mix-blend-mode: normal;
+}
+
+/* Old theme sits underneath, no animation — revealed areas are already covered */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+/* ─── Theme-switch property transitions ─────────────────── *
+ * Smooth out background-color / border-color / color changes
+ * for structural surfaces that sit outside the VTA snapshot
+ * (navbar, body, blob fill). Kept short (250ms) so hover
+ * states stay snappy — only theme-relevant properties are listed.
+ * ----------------------------------------------------------- */
+body,
+.navbar,
+.blob {
+  transition:
+    background-color 250ms ease,
+    border-color     250ms ease;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .blob    { animation: none; }
+  .reveal  { opacity: 1; transform: none; animation: none; }
+}
