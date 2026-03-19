@@ -31,32 +31,50 @@ export function toggleTheme(buttonEl: HTMLElement): void {
   }
 
   // Fallback for browsers without View Transitions API (Safari < 18.2, Firefox).
-  // Uses opacity fade — avoids clip-path which is janky on those engines.
+  // Uses Web Animations API for a clip-path circle reveal — GPU-composited,
+  // works on iOS Safari 13.4+. Falls back to opacity fade if animate() is absent.
   const newBg = next === 'dark' ? '#050506' : '#f8f9fc';
+  const maxR = Math.ceil(
+    Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
+  ) + 10;
 
   const overlay = document.createElement('div');
-  Object.assign(overlay.style, {
-    position: 'fixed',
-    inset: '0',
-    zIndex: '9999',
-    pointerEvents: 'none',
-    background: newBg,
-    opacity: '0',
-    transition: 'opacity 280ms ease',
-  });
+  overlay.style.cssText = [
+    'position:fixed', 'inset:0', 'z-index:9999', 'pointer-events:none',
+    `background:${newBg}`,
+    `clip-path:circle(0px at ${x}px ${y}px)`,
+    `-webkit-clip-path:circle(0px at ${x}px ${y}px)`,
+    'will-change:clip-path',
+    // Promote to GPU layer for smooth compositing on iOS
+    'transform:translateZ(0)',
+    '-webkit-transform:translateZ(0)',
+  ].join(';');
   document.body.appendChild(overlay);
 
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      overlay.style.opacity = '1';
-    });
-  });
-
-  overlay.addEventListener('transitionend', () => {
-    applyTheme(next);
+  if (typeof overlay.animate === 'function') {
+    const anim = overlay.animate(
+      [
+        { clipPath: `circle(0px at ${x}px ${y}px)` },
+        { clipPath: `circle(${maxR}px at ${x}px ${y}px)` },
+      ],
+      { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+    );
+    anim.onfinish = () => {
+      applyTheme(next);
+      overlay.remove();
+    };
+  } else {
+    // Last-resort: opacity fade for very old browsers
+    overlay.style.clipPath = '';
+    (overlay.style as CSSStyleDeclaration & { webkitClipPath?: string }).webkitClipPath = '';
     overlay.style.opacity = '0';
-    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
-  }, { once: true });
+    overlay.style.transition = 'opacity 280ms ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => { overlay.style.opacity = '1'; }));
+    overlay.addEventListener('transitionend', () => {
+      applyTheme(next);
+      overlay.remove();
+    }, { once: true });
+  }
 }
 
 function applyTheme(theme: Theme): void {
