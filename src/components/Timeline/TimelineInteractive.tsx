@@ -44,7 +44,7 @@ const EXPERIENCES: Experience[] = [
     dateRange: '2025 – Present',
     description:
       'Developing AI-powered tooling for the restaurant industry, exploring new patterns for integrating large language models into production workflows.',
-    tags: [],
+    tags: ['Claude API', 'OpenAI', 'React', 'React Native', 'Express', 'PostgreSQL', 'LiveKit', 'Socket.io'],
     current: true,
   },
   {
@@ -84,6 +84,7 @@ const EXPERIENCES: Experience[] = [
 type TagVariant = 'backend' | 'infra' | 'default';
 
 const TAG_MAP: Record<string, TagVariant> = {
+  // Backend
   NestJS: 'backend',
   'Node.js': 'backend',
   Express: 'backend',
@@ -93,6 +94,12 @@ const TAG_MAP: Record<string, TagVariant> = {
   Prisma: 'backend',
   TypeORM: 'backend',
   Drizzle: 'backend',
+  'Socket.io': 'backend',
+  LiveKit: 'backend',
+  // AI / LLM
+  'Claude API': 'backend',
+  OpenAI: 'backend',
+  // Infra / Platform
   Redis: 'infra',
   AWS: 'infra',
   Firebase: 'infra',
@@ -101,6 +108,9 @@ const TAG_MAP: Record<string, TagVariant> = {
   Docker: 'infra',
   GCP: 'infra',
   MySQL: 'infra',
+  // Frontend / Mobile
+  React: 'default',
+  'React Native': 'default',
 };
 
 function getTagVariant(tag: string): TagVariant {
