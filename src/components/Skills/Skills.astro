@@ -1,0 +1,51 @@
+---
+import { SkillsInteractive } from './SkillsInteractive';
+---
+
+<section id="skills" class="skills-section">
+  <div class="skills-inner">
+
+    <!-- Header -->
+    <div class="skills-header reveal">
+      <p class="skills-eyebrow">Expertise</p>
+      <h2 class="skills-heading">Skills</h2>
+    </div>
+
+    <!-- Interactive grid (ShimmerCard hover + Lucide icons) -->
+    <SkillsInteractive client:visible />
+
+  </div>
+</section>
+
+<style>
+  .skills-section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 1.5rem;
+  }
+
+  .skills-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .skills-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .skills-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .skills-heading {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--foreground);
+  }
+</style>
