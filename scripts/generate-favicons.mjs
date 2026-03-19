@@ -57,8 +57,7 @@ async function generateFavicon(outputName, size) {
       <defs>
         <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.6"/>
-          <stop offset="50%" stop-color="#a78bfa" stop-opacity="0.5"/>
-          <stop offset="100%" stop-color="#f472b6" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.6"/>
         </linearGradient>
       </defs>
       <!-- Background circle (dark) -->
@@ -93,8 +92,7 @@ function generateSvgFavicon() {
   <defs>
     <linearGradient id="ring" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#60a5fa"/>
-      <stop offset="50%" stop-color="#a78bfa"/>
-      <stop offset="100%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
     </linearGradient>
     <linearGradient id="bg" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#0a0a1a"/>

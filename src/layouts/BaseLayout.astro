@@ -120,24 +120,35 @@ const jsonLd = JSON.stringify({
     <!-- ── Theme: flash prevention + system detection + OS change listener ── -->
     <script is:inline>
       (function () {
+        var COLORS = { dark: '#050506', light: '#f8f9fc' };
         var stored = localStorage.getItem('theme');
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         // First load: honour stored pref, fall back to OS preference
-        document.documentElement.dataset.theme =
+        var theme =
           stored === 'light' || stored === 'dark'
             ? stored
             : prefersDark
               ? 'dark'
               : 'light';
 
+        document.documentElement.dataset.theme = theme;
+        syncThemeColor(theme);
+
         // When OS theme changes and the user hasn't set a manual preference,
         // follow the system automatically
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
           if (!localStorage.getItem('theme')) {
-            document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
+            var t = e.matches ? 'dark' : 'light';
+            document.documentElement.dataset.theme = t;
+            syncThemeColor(t);
           }
         });
+
+        function syncThemeColor(t) {
+          var metas = document.querySelectorAll('meta[name="theme-color"]');
+          metas.forEach(function (m) { m.content = COLORS[t]; });
+        }
       })();
     </script>
   </head>
