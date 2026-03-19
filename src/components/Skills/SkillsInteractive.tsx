@@ -26,7 +26,7 @@ const CATEGORIES: Category[] = [
     name: 'AI & Agents',
     Icon: BrainCircuit,
     accent: 'secondary',
-    skills: ['Claude API', 'OpenAI', 'Gemini', 'AI Agents', 'Multi-agent Orchestration', 'Agentic Systems', 'MCP Servers', 'RAG', 'LLM Integration', 'SSE Streaming', 'Tool-use Patterns'],
+    skills: ['Claude API', 'OpenAI', 'Gemini', 'AI Agents', 'Multi-agent Orchestration', 'Agentic Systems', 'MCP Servers', 'RAG', 'LLM Integration', 'SSE Streaming', 'Tool-use Patterns', 'Hugging Face', 'Vector Embeddings', 'Prompt Engineering', 'Fine-tuning'],
   },
   {
     name: 'Backend',
