@@ -30,12 +30,9 @@ export function toggleTheme(buttonEl: HTMLElement): void {
     return;
   }
 
-  // Fallback: expand new-theme circle from button, then swap — mirrors VTA direction
-  const maxR = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  );
-  const newBg = next === 'dark' ? '#050506' : '#fafafa';
+  // Fallback for browsers without View Transitions API (Safari < 18.2, Firefox).
+  // Uses opacity fade — avoids clip-path which is janky on those engines.
+  const newBg = next === 'dark' ? '#050506' : '#f8f9fc';
 
   const overlay = document.createElement('div');
   Object.assign(overlay.style, {
@@ -44,23 +41,21 @@ export function toggleTheme(buttonEl: HTMLElement): void {
     zIndex: '9999',
     pointerEvents: 'none',
     background: newBg,
-    clipPath: `circle(0px at ${x}px ${y}px)`,
-    willChange: 'clip-path',
+    opacity: '0',
+    transition: 'opacity 280ms ease',
   });
   document.body.appendChild(overlay);
 
-  // Double rAF: let the browser commit the initial clip before animating
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      overlay.style.transition = 'clip-path 900ms cubic-bezier(0.22, 1, 0.36, 1)';
-      overlay.style.clipPath = `circle(${maxR}px at ${x}px ${y}px)`;
+      overlay.style.opacity = '1';
     });
   });
 
-  // Apply theme once overlay fully covers — bg color matches so the swap is invisible
   overlay.addEventListener('transitionend', () => {
     applyTheme(next);
-    overlay.remove();
+    overlay.style.opacity = '0';
+    overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
   }, { once: true });
 }
 
