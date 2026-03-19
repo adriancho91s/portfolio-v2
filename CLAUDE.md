@@ -31,6 +31,7 @@
 - **`prefers-reduced-motion` must disable ALL animations** — check at every animated component
 - **Images via Astro `<Image />`** — NEVER raw `<img>` tags
 - **pnpm only** — never npm
+- **Modern JS (ES2018+)** — use `const`/`let` (NEVER `var`), arrow functions, template literals, and optional chaining. Applies to all JS/TS including `is:inline` scripts
 
 ---
 
