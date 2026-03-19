@@ -383,11 +383,10 @@ export function HeroScene() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    // Touch/pointer heuristic — more reliable than breakpoint alone
-    const mobile =
-      window.matchMedia('(hover: none) and (pointer: coarse)').matches ||
-      window.innerWidth < 768;
-    setMobile(mobile);
+    // Desktop only — mobile/WebKit devices use the CSS orb fallback in Hero.astro
+    if (!window.matchMedia('(min-width: 1024px)').matches) return;
+
+    setMobile(false);
     setReady(true);
 
     // Theme tracking
