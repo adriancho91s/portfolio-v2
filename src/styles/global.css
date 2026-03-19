@@ -132,12 +132,21 @@
 }
 
 /* ─── Section reveal (native scroll-driven) ──────────────── */
+/* Default: fully visible — Safari and browsers without scroll-driven animations */
 .reveal {
-  opacity: 0;
-  transform: translateY(2rem);
-  animation: revealUp linear both;
-  animation-timeline: view();
-  animation-range: entry 0% entry 40%;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Progressive enhancement: scroll-driven reveal for Chrome/Edge 115+ */
+@supports (animation-timeline: view()) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(2rem);
+    animation: revealUp linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
 }
 
 @keyframes revealUp {
@@ -257,6 +266,7 @@ body,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .blob    { animation: none; }
-  .reveal  { opacity: 1; transform: none; animation: none; }
+  .blob   { animation: none; }
+  /* Ensure reveal elements are always visible with reduced motion */
+  .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
 }
