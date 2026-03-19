@@ -31,12 +31,35 @@ allowed-tools: Read, Edit
 
 ## Step 3 — Verify initial theme script is in BaseLayout.astro
 
-This inline script must run before any CSS to prevent flash:
+This inline script must run before any CSS to prevent flash.
+**Must use modern JS (ES2018+):** `const`/`let`, arrow functions — NEVER `var`.
+
 ```html
 <script is:inline>
-  const stored = localStorage.getItem('theme')
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  document.documentElement.dataset.theme = stored ?? (prefersDark ? 'dark' : 'light')
+  (function () {
+    const COLORS = { dark: '#050506', light: '#f8f9fc' };
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored === 'light' || stored === 'dark'
+      ? stored
+      : prefersDark ? 'dark' : 'light';
+
+    document.documentElement.dataset.theme = theme;
+    syncThemeColor(theme);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        const t = e.matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = t;
+        syncThemeColor(t);
+      }
+    });
+
+    function syncThemeColor(t) {
+      document.querySelectorAll('meta[name="theme-color"]')
+        .forEach((m) => { m.content = COLORS[t]; });
+    }
+  })();
 </script>
 ```
 
@@ -49,6 +72,7 @@ The propagation animation:
 4. Check `prefers-reduced-motion` — if true, skip animation, just set attribute
 5. Animate `clip-path` to `circle(maxRadius at x y)` over 500ms
 6. On `transitionend`: set `data-theme`, save to `localStorage`, remove overlay
+7. **Sync `<meta name="theme-color">`** — `applyTheme()` updates all theme-color meta tags so browser chrome/status bar matches the active theme
 
 ## Step 5 — Verify `prefers-reduced-motion` is in global.css
 
