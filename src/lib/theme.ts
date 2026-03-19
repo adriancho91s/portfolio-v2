@@ -77,7 +77,19 @@ export function toggleTheme(buttonEl: HTMLElement): void {
   }
 }
 
+const THEME_COLORS: Record<Theme, string> = {
+  dark: '#050506',
+  light: '#f8f9fc',
+};
+
 function applyTheme(theme: Theme): void {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem('theme', theme);
+
+  // Sync browser chrome / mobile status-bar color
+  document
+    .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+    .forEach((meta) => {
+      meta.content = THEME_COLORS[theme];
+    });
 }

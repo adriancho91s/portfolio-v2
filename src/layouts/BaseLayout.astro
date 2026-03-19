@@ -93,7 +93,9 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:image:alt" content="Adrian Gaitan — Full Stack Engineer & AI Systems — Pereira, Colombia" />
 
     <!-- ── Favicons ── -->
-    <!-- PNG favicon (modern browsers) -->
+    <!-- SVG favicon (modern browsers — scales to any size) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- PNG fallback -->
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
     <link rel="icon" type="image/png" sizes="32x32"  href="/favicon-32.png" />
     <!-- Legacy ICO fallback -->
@@ -118,24 +120,35 @@ const jsonLd = JSON.stringify({
     <!-- ── Theme: flash prevention + system detection + OS change listener ── -->
     <script is:inline>
       (function () {
-        var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const COLORS = { dark: '#050506', light: '#f8f9fc' };
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         // First load: honour stored pref, fall back to OS preference
-        document.documentElement.dataset.theme =
+        const theme =
           stored === 'light' || stored === 'dark'
             ? stored
             : prefersDark
               ? 'dark'
               : 'light';
 
+        document.documentElement.dataset.theme = theme;
+        syncThemeColor(theme);
+
         // When OS theme changes and the user hasn't set a manual preference,
         // follow the system automatically
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
           if (!localStorage.getItem('theme')) {
-            document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
+            const t = e.matches ? 'dark' : 'light';
+            document.documentElement.dataset.theme = t;
+            syncThemeColor(t);
           }
         });
+
+        function syncThemeColor(t) {
+          document.querySelectorAll('meta[name="theme-color"]')
+            .forEach((m) => { m.content = COLORS[t]; });
+        }
       })();
     </script>
   </head>
