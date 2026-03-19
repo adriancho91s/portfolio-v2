@@ -59,15 +59,15 @@ function buildPhasePositions(nodeCount: number): THREE.Vector3[][] {
     return v;
   });
 
-  // Phase 1 – DNA double helix
+  // Phase 1 – DNA double helix — radius 1.8 matches height ±1.8 → square ratio
   const p1 = Array.from({ length: nodeCount }, (_, i) => {
     const t      = (i / nodeCount) * Math.PI * 5;
     const y      = (i / (nodeCount - 1)) * 3.6 - 1.8;
     const strand = i % 2 === 0 ? 0 : Math.PI;
     return new THREE.Vector3(
-      1.3 * Math.cos(t + strand),
+      1.8 * Math.cos(t + strand),
       y,
-      1.3 * Math.sin(t + strand),
+      1.8 * Math.sin(t + strand),
     );
   });
 

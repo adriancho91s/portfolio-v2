@@ -31,50 +31,51 @@ export function toggleTheme(buttonEl: HTMLElement): void {
   }
 
   // Fallback for browsers without View Transitions API (Safari < 18.2, Firefox).
-  // Uses Web Animations API for a clip-path circle reveal — GPU-composited,
-  // works on iOS Safari 13.4+. Falls back to opacity fade if animate() is absent.
+  // Uses CSS transitions — more reliable than Web Animations API for clip-path
+  // in WebKit. Key: set initial state, force reflow, then set transition + end state.
   const newBg = next === 'dark' ? '#050506' : '#f8f9fc';
   const maxR = Math.ceil(
     Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))
   ) + 10;
 
+  const start = `circle(0px at ${x}px ${y}px)`;
+  const end   = `circle(${maxR}px at ${x}px ${y}px)`;
+  const ease  = 'cubic-bezier(0.22,1,0.36,1)';
+
   const overlay = document.createElement('div');
+  // Base styles — NO clip-path here yet, set via property to avoid prefix conflicts
   overlay.style.cssText = [
     'position:fixed', 'inset:0', 'z-index:9999', 'pointer-events:none',
     `background:${newBg}`,
-    `clip-path:circle(0px at ${x}px ${y}px)`,
-    `-webkit-clip-path:circle(0px at ${x}px ${y}px)`,
     'will-change:clip-path',
-    // Promote to GPU layer for smooth compositing on iOS
-    'transform:translateZ(0)',
-    '-webkit-transform:translateZ(0)',
+    'transform:translateZ(0)',         // GPU layer
+    '-webkit-transform:translateZ(0)', // WebKit GPU layer
   ].join(';');
+
+  // Set both prefixed + unprefixed so WebKit picks the right one
+  overlay.style.setProperty('-webkit-clip-path', start);
+  overlay.style.setProperty('clip-path', start);
+
   document.body.appendChild(overlay);
 
-  if (typeof overlay.animate === 'function') {
-    const anim = overlay.animate(
-      [
-        { clipPath: `circle(0px at ${x}px ${y}px)` },
-        { clipPath: `circle(${maxR}px at ${x}px ${y}px)` },
-      ],
-      { duration: 1000, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
-    );
-    anim.onfinish = () => {
-      applyTheme(next);
-      overlay.remove();
-    };
-  } else {
-    // Last-resort: opacity fade for very old browsers
-    overlay.style.clipPath = '';
-    (overlay.style as CSSStyleDeclaration & { webkitClipPath?: string }).webkitClipPath = '';
-    overlay.style.opacity = '0';
-    overlay.style.transition = 'opacity 280ms ease';
-    requestAnimationFrame(() => requestAnimationFrame(() => { overlay.style.opacity = '1'; }));
-    overlay.addEventListener('transitionend', () => {
-      applyTheme(next);
-      overlay.remove();
-    }, { once: true });
-  }
+  // Force layout — required before setting transition so WebKit registers start state
+  void overlay.getBoundingClientRect();
+
+  // Set transition on both properties
+  overlay.style.transition = [
+    `clip-path 1000ms ${ease}`,
+    `-webkit-clip-path 1000ms ${ease}`,
+  ].join(',');
+
+  // Apply end state — triggers the transition
+  overlay.style.setProperty('-webkit-clip-path', end);
+  overlay.style.setProperty('clip-path', end);
+
+  // Remove after transition (listen for whichever property fires first)
+  overlay.addEventListener('transitionend', () => {
+    applyTheme(next);
+    overlay.remove();
+  }, { once: true });
 }
 
 const THEME_COLORS: Record<Theme, string> = {
