@@ -1,0 +1,224 @@
+---
+const projects = [
+  {
+    name: 'Mi Cita',
+    tagline: 'SaaS platform for the Colombian market',
+    description:
+      'Full-stack multi-tenant SaaS with a service-oriented architecture. Turborepo monorepo, shared packages, type-safe API layer, and a modern React frontend built for scale.',
+    tags: ['NestJS', 'Next.js', 'PostgreSQL', 'Turborepo'],
+    href: null,
+    accent: 'indigo',
+  },
+  {
+    name: 'SwiftControl',
+    tagline: 'Software company — swiftcontrol.co',
+    description:
+      'Founding and building SwiftControl — a software company creating developer tools and scalable product infrastructure for modern teams.',
+    tags: ['TypeScript', 'Next.js', 'NestJS'],
+    href: 'https://swiftcontrol.co',
+    accent: 'cyan',
+  },
+  {
+    name: 'Agent Memory Layer',
+    tagline: 'Tree-structured distributed memory for AI agents',
+    description:
+      'A framework built on distributed database concepts and tree data structures — giving AI coding agents persistent, structured memory across sessions and environments. Agents share decisions, context, and knowledge through a connected graph: every node is a memory, every edge is a relationship.',
+    tags: ['TypeScript', 'AI Agents', 'Tree Structures', 'Distributed DB'],
+    href: null,
+    accent: 'indigo',
+  },
+];
+---
+
+<section id="projects" class="projects-section">
+  <div class="projects-inner">
+
+    <!-- Header -->
+    <div class="projects-header reveal">
+      <p class="projects-eyebrow">Work</p>
+      <h2 class="projects-heading">Projects</h2>
+    </div>
+
+    <!-- Grid -->
+    <div class="projects-grid">
+      {projects.map(({ name, tagline, description, tags, href, accent }) => (
+        <article class={`project-card reveal accent-${accent}`}>
+          <div class="project-body">
+            <div class="project-top">
+              <h3 class="project-name">{name}</h3>
+              {href && (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-link"
+                  aria-label={`View ${name} on GitHub`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+            <p class="project-tagline">{tagline}</p>
+            <p class="project-description">{description}</p>
+            <div class="project-tags">
+              {tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 1.5rem;
+  }
+
+  .projects-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .projects-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .projects-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .projects-heading {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--foreground);
+  }
+
+  /* Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Card */
+  .project-card {
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    overflow: hidden;
+    transition: border-color 250ms ease, transform 250ms ease;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .project-card.accent-cyan::before {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--accent-glow), transparent);
+  }
+
+  .project-card.accent-indigo::before {
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(94 106 210 / 0.12), transparent);
+  }
+
+  .project-card:hover {
+    border-color: var(--accent-border-mix);
+    transform: translateY(-2px);
+  }
+
+  .project-card:hover::before {
+    opacity: 1;
+  }
+
+  .project-body {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+  }
+
+  .project-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .project-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+  }
+
+  .project-link {
+    color: var(--foreground-muted);
+    transition: color 150ms ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .project-link:hover {
+    color: var(--accent-secondary);
+  }
+
+  .project-tagline {
+    font-size: 0.82rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .project-description {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--foreground-muted);
+    flex: 1;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--foreground-muted);
+  }
+</style>
