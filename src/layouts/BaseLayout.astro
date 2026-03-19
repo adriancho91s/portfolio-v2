@@ -1,0 +1,145 @@
+---
+import '../styles/global.css';
+import Navbar from '@components/Navigation/Navbar.astro';
+import Footer from '@components/Footer/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  /** Canonical path — defaults to current URL */
+  canonicalPath?: string;
+}
+
+const {
+  title = 'Adrian Gaitan — Full Stack Engineer & AI Systems',
+  description = 'Full Stack Engineer specialized in AI agent systems, multi-agent orchestration, and scalable microservices. Building AI-native products from Pereira, Colombia.',
+  image = '/images/og-image.png',
+} = Astro.props;
+
+const siteUrl = Astro.site ?? 'https://adriangaitan.dev';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(image, siteUrl);
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Adrian Gaitan',
+  url: siteUrl.toString(),
+  image: ogImageURL.toString(),
+  jobTitle: 'Full Stack Engineer',
+  description: description,
+  sameAs: [
+    'https://github.com/adriancho91s',
+    'https://www.linkedin.com/in/adriangaitan',
+    'https://instagram.com/adriancho91s',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Pereira',
+    addressCountry: 'CO',
+  },
+  knowsAbout: [
+    'AI Agent Systems',
+    'Multi-agent Orchestration',
+    'Full Stack Engineering',
+    'TypeScript',
+    'Node.js',
+    'React',
+    'NestJS',
+    'Microservices',
+    'Blockchain',
+  ],
+});
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- ── Primary SEO ── -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="author" content="Adrian Gaitan" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Adrian Gaitan, Full Stack Engineer, AI Systems, AI Agents, Multi-agent, NestJS, React, TypeScript, Colombia, Pereira, Software Engineer" />
+
+    <!-- ── Open Graph ── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Adrian Gaitan" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Adrian Gaitan — Full Stack Engineer & AI Systems" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- ── Twitter / X Card ── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@adriancho91s" />
+    <meta name="twitter:creator" content="@adriancho91s" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content="Adrian Gaitan — Full Stack Engineer & AI Systems" />
+
+    <!-- ── Favicons ── -->
+    <!-- PNG favicon (modern browsers) -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="icon" type="image/png" sizes="32x32"  href="/favicon-32.png" />
+    <!-- Legacy ICO fallback -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <!-- Apple touch icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <!-- PWA manifest colour -->
+    <meta name="theme-color" content="#050506" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8f9fc" media="(prefers-color-scheme: light)" />
+
+    <!-- ── JSON-LD Structured Data ── -->
+    <script is:inline type="application/ld+json" set:html={jsonLd} />
+
+    <!-- ── Fonts (variable) ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ── Prevent theme flash ── -->
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem('theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme =
+          stored === 'light' || stored === 'dark'
+            ? stored
+            : prefersDark
+              ? 'dark'
+              : 'light';
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Ambient background blobs -->
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+
+    <Navbar />
+
+    <main id="main-content" class="relative z-10">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
