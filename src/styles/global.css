@@ -233,7 +233,7 @@ html[data-theme="light"] .logo-img {
 
 /* New theme expands from button: expo-out easing for premium feel */
 ::view-transition-new(root) {
-  animation: theme-reveal 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: theme-reveal 1500ms cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 2;
   mix-blend-mode: normal;
 }

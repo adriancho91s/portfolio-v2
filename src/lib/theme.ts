@@ -40,7 +40,7 @@ export function toggleTheme(buttonEl: HTMLElement): void {
 
   const start = `circle(0px at ${x}px ${y}px)`;
   const end   = `circle(${maxR}px at ${x}px ${y}px)`;
-  const ease  = 'cubic-bezier(0.22,1,0.36,1)';
+  const ease  = 'cubic-bezier(0.16,1,0.3,1)';
 
   const overlay = document.createElement('div');
   // Base styles — NO clip-path here yet, set via property to avoid prefix conflicts
@@ -63,8 +63,8 @@ export function toggleTheme(buttonEl: HTMLElement): void {
 
   // Set transition on both properties
   overlay.style.transition = [
-    `clip-path 1000ms ${ease}`,
-    `-webkit-clip-path 1000ms ${ease}`,
+    `clip-path 1500ms ${ease}`,
+    `-webkit-clip-path 1500ms ${ease}`,
   ].join(',');
 
   // Apply end state — triggers the transition
