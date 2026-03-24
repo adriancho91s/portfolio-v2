@@ -1,5 +1,15 @@
 ---
-const projects = [
+interface Project {
+  name: string;
+  tagline: string;
+  description: string;
+  highlights?: string[];
+  tags: string[];
+  href: string | null;
+  accent: 'indigo' | 'cyan';
+}
+
+const projects: Project[] = [
   {
     name: 'Mi Cita',
     tagline: 'AI-driven scheduling for Colombia',
@@ -27,6 +37,21 @@ const projects = [
     href: null,
     accent: 'indigo',
   },
+  {
+    name: 'EliteStack Bootcamp',
+    tagline: 'Full Stack bootcamp — Pereira, Colombia',
+    description:
+      'Co-directed a 6-week intensive Full Stack Web Development Bootcamp with faculty from Universidad Tecnológica de Pereira. Rebuilt the program around market-ready technologies, modern engineering practices, and AI developer tooling — preparing students to enter the industry production-ready.',
+    highlights: [
+      'Designed full curriculum — TypeScript, React, Next.js, NestJS, PostgreSQL, Docker, and more',
+      'Integrated AI developer tooling (GitHub Copilot, v0, AI agents) into the learning path from day one',
+      'Coordinated supervisors and personally mentored students, running feedback sessions throughout the program',
+      'Extended scope: web security, best practices, soft skills, and technical interview prep',
+    ],
+    tags: ['React', 'Next.js', 'NestJS', 'TypeScript', 'GitHub Copilot'],
+    href: 'https://elitestack-bootcamp.vercel.app',
+    accent: 'cyan',
+  },
 ];
 ---
 
@@ -41,7 +66,7 @@ const projects = [
 
     <!-- Grid -->
     <div class="projects-grid">
-      {projects.map(({ name, tagline, description, tags, href, accent }) => (
+      {projects.map(({ name, tagline, description, highlights, tags, href, accent }) => (
         <article class={`project-card reveal accent-${accent}`}>
           <div class="project-body">
             <div class="project-top">
@@ -52,7 +77,7 @@ const projects = [
                   target="_blank"
                   rel="noopener noreferrer"
                   class="project-link"
-                  aria-label={`View ${name} on GitHub`}
+                  aria-label={`Visit ${name}`}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -62,6 +87,16 @@ const projects = [
             </div>
             <p class="project-tagline">{tagline}</p>
             <p class="project-description">{description}</p>
+            {highlights && highlights.length > 0 && (
+              <ul class="project-highlights">
+                {highlights.map((item) => (
+                  <li class="project-highlight-item">
+                    <span class="highlight-arrow" aria-hidden="true">→</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
             <div class="project-tags">
               {tags.map((tag) => (
                 <span class="tag">{tag}</span>
@@ -206,6 +241,47 @@ const projects = [
     flex: 1;
   }
 
+  /* Highlights */
+  .project-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-left: 0.875rem;
+    border-left: 1.5px solid var(--border);
+  }
+
+  .accent-cyan .project-highlights {
+    border-left-color: rgba(0, 212, 255, 0.3);
+  }
+
+  .accent-indigo .project-highlights {
+    border-left-color: rgba(94, 106, 210, 0.4);
+  }
+
+  .project-highlight-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--foreground-muted);
+  }
+
+  .highlight-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent-secondary);
+    flex-shrink: 0;
+  }
+
+  .accent-indigo .highlight-arrow {
+    color: var(--accent);
+  }
+
+  /* Tags */
   .project-tags {
     display: flex;
     flex-wrap: wrap;
