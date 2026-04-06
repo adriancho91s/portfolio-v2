@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import avatarImage from '../../assets/avatar.png';
+
 const stats = [
   { value: '3+',   label: 'Years building' },
   { value: '4',    label: 'Production roles' },
@@ -22,13 +25,15 @@ const stats = [
       <!-- Portrait -->
       <div class="about-portrait reveal">
         <div class="portrait-frame">
-          <img
-            src="/images/avatar.png"
-            alt="Adrian Gaitan — illustrated portrait"
-            width="400"
-            height="500"
+          <Image
+            src={avatarImage}
+            alt="Adrian Gaitan — Full Stack Engineer from Pereira, Colombia"
+            width={400}
+            height={500}
             loading="lazy"
             decoding="async"
+            format="avif"
+            quality={80}
           />
           <!-- Glow ring behind the image -->
           <div class="portrait-glow" aria-hidden="true"></div>

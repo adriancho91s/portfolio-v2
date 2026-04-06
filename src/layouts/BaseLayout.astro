@@ -21,36 +21,78 @@ const siteUrl = Astro.site ?? 'https://adriangaitan.dev';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 
-const jsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Adrian Gaitan',
-  url: siteUrl.toString(),
-  image: ogImageURL.toString(),
-  jobTitle: 'Full Stack Engineer',
-  description: description,
-  sameAs: [
-    'https://github.com/adriancho91s',
-    'https://www.linkedin.com/in/adriangaitan',
-    'https://instagram.com/adriancho91s',
-  ],
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Pereira',
-    addressCountry: 'CO',
+const jsonLd = JSON.stringify([
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Adrian Gaitan',
+    url: siteUrl.toString(),
+    image: ogImageURL.toString(),
+    jobTitle: 'Full Stack Engineer',
+    description: description,
+    email: 'contact@adriangaitan.dev',
+    knowsLanguage: ['Spanish', 'English'],
+    alumniOf: {
+      '@type': 'CollegeOrUniversity',
+      name: 'Universidad Tecnológica de Pereira',
+      url: 'https://www.utp.edu.co',
+    },
+    worksFor: {
+      '@type': 'Organization',
+      name: 'SwiftControl',
+      url: 'https://swiftcontrol.co',
+    },
+    hasOccupation: {
+      '@type': 'Occupation',
+      name: 'Full Stack Engineer',
+      occupationLocation: {
+        '@type': 'Country',
+        name: 'Colombia',
+      },
+      skills: 'AI Agent Systems, Multi-agent Orchestration, TypeScript, Node.js, React, NestJS, Microservices, PostgreSQL',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'contact@adriangaitan.dev',
+      contactType: 'professional',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Pereira',
+      addressRegion: 'Risaralda',
+      addressCountry: 'CO',
+    },
+    knowsAbout: [
+      'AI Agent Systems',
+      'Multi-agent Orchestration',
+      'Full Stack Engineering',
+      'TypeScript',
+      'Node.js',
+      'React',
+      'NestJS',
+      'Microservices',
+      'PostgreSQL',
+      'Distributed Systems',
+    ],
+    sameAs: [
+      'https://github.com/adriancho91s',
+      'https://www.linkedin.com/in/adriangaitan',
+      'https://instagram.com/adriancho91s',
+    ],
   },
-  knowsAbout: [
-    'AI Agent Systems',
-    'Multi-agent Orchestration',
-    'Full Stack Engineering',
-    'TypeScript',
-    'Node.js',
-    'React',
-    'NestJS',
-    'Microservices',
-    'Blockchain',
-  ],
-});
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Adrian Gaitan',
+    url: siteUrl.toString(),
+    description: description,
+    inLanguage: 'en',
+    author: {
+      '@type': 'Person',
+      name: 'Adrian Gaitan',
+    },
+  },
+]);
 ---
 
 <!doctype html>
@@ -65,8 +107,10 @@ const jsonLd = JSON.stringify({
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     <meta name="author" content="Adrian Gaitan" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="keywords" content="Adrian Gaitan, Full Stack Engineer, AI Systems, AI Agents, Multi-agent, NestJS, React, TypeScript, Colombia, Pereira, Software Engineer" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="origin-when-cross-origin" />
 
     <!-- ── Open Graph ── -->
     <meta property="og:type" content="website" />
@@ -110,6 +154,8 @@ const jsonLd = JSON.stringify({
     <script is:inline type="application/ld+json" set:html={jsonLd} />
 
     <!-- ── Fonts (variable) ── -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

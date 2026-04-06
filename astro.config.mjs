@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
+  site: 'https://adriangaitan.dev',
   output: 'server',
 
   integrations: [react()],
