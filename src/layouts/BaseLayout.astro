@@ -26,6 +26,15 @@ const jsonLd = JSON.stringify([
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Adrian Gaitan',
+    givenName: 'Adrian',
+    additionalName: 'F.',
+    familyName: 'Gaitan',
+    alternateName: [
+      'Adrian F. Gaitan',
+      'Adrian F Gaitan',
+      'Adrian Gaitan Londoño',
+      'Adrian F. Gaitan Londoño',
+    ],
     url: siteUrl.toString(),
     image: ogImageURL.toString(),
     jobTitle: 'Full Stack Engineer',
@@ -76,8 +85,10 @@ const jsonLd = JSON.stringify([
     ],
     sameAs: [
       'https://github.com/adriancho91s',
-      'https://www.linkedin.com/in/adriangaitan',
+      'https://www.linkedin.com/in/adriancho91s',
       'https://instagram.com/adriancho91s',
+      'https://twitter.com/adriancho91s',
+      'https://x.com/adriancho91s',
     ],
   },
   {
@@ -108,7 +119,7 @@ const jsonLd = JSON.stringify([
     <link rel="canonical" href={canonicalURL} />
     <meta name="author" content="Adrian Gaitan" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="keywords" content="Adrian Gaitan, Full Stack Engineer, AI Systems, AI Agents, Multi-agent, NestJS, React, TypeScript, Colombia, Pereira, Software Engineer" />
+    <meta name="keywords" content="Adrian Gaitan, Adrian F. Gaitan, Adrian F Gaitan, Adrian Gaitan Londoño, Adrian F. Gaitan Londoño, Full Stack Engineer, AI Systems, AI Agents, Multi-agent, NestJS, React, TypeScript, Colombia, Pereira, Software Engineer" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="referrer" content="origin-when-cross-origin" />
 
@@ -126,6 +137,7 @@ const jsonLd = JSON.stringify([
     <meta property="og:locale" content="en_US" />
     <meta property="profile:first_name" content="Adrian" />
     <meta property="profile:last_name" content="Gaitan" />
+    <meta property="profile:middle_name" content="F." />
 
     <!-- ── Twitter / X Card ── -->
     <meta name="twitter:card" content="summary_large_image" />

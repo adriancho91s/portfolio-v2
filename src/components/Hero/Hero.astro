@@ -28,7 +28,7 @@ import HeroScene from './HeroScene';
     </div>
 
     <h1 class="hero-title">
-      Adrian<br />Gaitan
+      Adrian<br />Gaitan<span class="sr-only"> F. Gaitan Londoño</span>
     </h1>
 
     <p class="hero-subtitle">
@@ -449,6 +449,19 @@ import HeroScene from './HeroScene';
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(1.5rem); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Screen-reader only ── */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* ── Reduced motion ── */
